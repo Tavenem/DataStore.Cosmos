@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.31.0-preview
+### Changed
+- Update to .NET 7 preview
+
 ## 0.30.0-preview
 ### Changed
 - Update to .NET 6 preview
