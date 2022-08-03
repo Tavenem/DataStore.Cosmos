@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.32.0-preview
+### Changed
+- Update dependencies
+
 ## 0.31.0-preview
 ### Changed
 - Update to .NET 7 preview
