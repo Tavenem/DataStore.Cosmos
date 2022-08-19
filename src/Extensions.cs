@@ -13,7 +13,7 @@ public static class DataStorageCosmosExtensions
     /// </summary>
     /// <typeparam name="T">The type of items in the collection.</typeparam>
     /// <param name="iterator">The current <see cref="FeedIterator{T}"/>.</param>
-    /// <param name="pageNumber">The current page number.</param>
+    /// <param name="pageNumber">The current page number. The first page is 1.</param>
     /// <param name="pageSize">The page size.</param>
     /// <returns>A <see cref="CosmosPagedList{T}"/> containing the items in the current
     /// collection.</returns>

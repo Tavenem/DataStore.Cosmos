@@ -21,7 +21,7 @@ public class CosmosPagedList<T> : PagedList<T>
     /// </summary>
     /// <param name="collection">The collection whose elements are copied to the new
     /// list.</param>
-    /// <param name="pageNumber">The current page number.</param>
+    /// <param name="pageNumber">The current page number. The first page is 1.</param>
     /// <param name="pageSize">The page size.</param>
     /// <param name="continuationToken">
     /// A continuation token which can be used to resume iteration on the underlying collection.
@@ -41,7 +41,7 @@ public class CosmosPagedList<T> : PagedList<T>
     /// </summary>
     /// <param name="iterator">The <see cref="FeedIterator{T}"/> whose elements are copied to
     /// the new list.</param>
-    /// <param name="pageNumber">The current page number.</param>
+    /// <param name="pageNumber">The current page number. The first page is 1.</param>
     /// <param name="pageSize">The page size.</param>
     public static async Task<CosmosPagedList<T>> FromFeedIteratorAsync(
         FeedIterator<T>? iterator,
@@ -50,7 +50,7 @@ public class CosmosPagedList<T> : PagedList<T>
     {
         var collection = new List<T>();
         string? continuationToken = null;
-        if (!(iterator is null))
+        if (iterator is not null)
         {
             while (iterator.HasMoreResults)
             {

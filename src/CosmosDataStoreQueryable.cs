@@ -301,10 +301,10 @@ public class CosmosDataStoreQueryable<T> : IDataStoreQueryable<T>
 
     /// <summary>
     /// Gets a number of items from this <see cref="IDataStoreQueryable{T}" /> equal to
-    /// <paramref name="pageSize" />, after skipping <paramref name="pageNumber" /> multiples of
+    /// <paramref name="pageSize" />, after skipping <paramref name="pageNumber" />-1 multiples of
     /// that amount.
     /// </summary>
-    /// <param name="pageNumber">The current page number.</param>
+    /// <param name="pageNumber">The current page number. The first page is 1.</param>
     /// <param name="pageSize">The page size.</param>
     /// <returns>An <see cref="IPagedList{T}" /> of items from this <see
     /// cref="IDataStoreQueryable{T}" />.</returns>
@@ -329,10 +329,10 @@ public class CosmosDataStoreQueryable<T> : IDataStoreQueryable<T>
 
     /// <summary>
     /// Asynchronously gets a number of items from this <see cref="IDataStoreQueryable{T}"/>
-    /// equal to <paramref name="pageSize"/>, after skipping <paramref name="pageNumber"/>
+    /// equal to <paramref name="pageSize"/>, after skipping <paramref name="pageNumber"/>-1
     /// multiples of that amount.
     /// </summary>
-    /// <param name="pageNumber">The current page number.</param>
+    /// <param name="pageNumber">The current page number. The first page is 1.</param>
     /// <param name="pageSize">The page size.</param>
     /// <returns>An <see cref="IPagedList{T}"/> of items from this <see
     /// cref="IDataStoreQueryable{T}"/>.</returns>
@@ -669,10 +669,7 @@ public class CosmosDataStoreQueryable<T> : IDataStoreQueryable<T>
         var iterator = _source.ToFeedIterator();
         while (iterator.HasMoreResults)
         {
-            foreach (var item in iterator.ReadNextAsync().GetAwaiter().GetResult())
-            {
-                list.Add(item);
-            }
+            list.AddRange(iterator.ReadNextAsync().GetAwaiter().GetResult());
         }
         return list;
     }
@@ -688,10 +685,7 @@ public class CosmosDataStoreQueryable<T> : IDataStoreQueryable<T>
         var iterator = _source.ToFeedIterator();
         while (iterator.HasMoreResults)
         {
-            foreach (var item in await iterator.ReadNextAsync().ConfigureAwait(false))
-            {
-                list.Add(item);
-            }
+            list.AddRange(await iterator.ReadNextAsync().ConfigureAwait(false));
         }
         return list;
     }
