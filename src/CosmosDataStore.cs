@@ -22,14 +22,20 @@ namespace Tavenem.DataStorage.Cosmos;
 /// can be cast to the more specific <see cref="CosmosPagedList{T}"/> type).
 /// </para>
 /// </remarks>
-public class CosmosDataStore : IDataStore
+/// <param name="cosmosClient">The <see cref="CosmosClient"/> used for all transactions.</param>
+/// <param name="databaseName">The name of the database used by this <see cref="IDataStore"/>.</param>
+/// <param name="containerName">The name of the container used by this <see cref="IDataStore"/>.</param>
+public class CosmosDataStore(
+    CosmosClient cosmosClient,
+    string databaseName,
+    string containerName) : IDataStore
 {
     private readonly IAppCache _cache = new CachingService();
 
     /// <summary>
     /// The <see cref="Microsoft.Azure.Cosmos.Container"/> used for all transactions.
     /// </summary>
-    public Container Container { get; set; }
+    public Container Container { get; set; } = cosmosClient.GetContainer(databaseName, containerName);
 
     /// <summary>
     /// <para>
@@ -51,17 +57,6 @@ public class CosmosDataStore : IDataStore
     /// </para>
     /// </summary>
     public bool SupportsCaching => true;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="CosmosDataStore"/>.
-    /// </summary>
-    /// <param name="cosmosClient">The <see cref="CosmosClient"/> used for all transactions.</param>
-    /// <param name="databaseName">The name of the database used by this <see cref="IDataStore"/>.</param>
-    /// <param name="containerName">The name of the container used by this <see cref="IDataStore"/>.</param>
-    public CosmosDataStore(
-        CosmosClient cosmosClient,
-        string databaseName,
-        string containerName) => Container = cosmosClient.GetContainer(databaseName, containerName);
 
     /// <summary>
     /// Creates a new <see cref="IIdItem.Id"/> for an <see cref="IIdItem"/> of the given type.

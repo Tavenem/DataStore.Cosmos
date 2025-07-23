@@ -1,6 +1,6 @@
 name: publish
 env:
-  VERSION: '0.33.1-preview'
+  VERSION: '0.34.0-preview'
   PRERELEASE: true
 on:
   push:
@@ -12,12 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: Setup .NET 7
-        uses: actions/setup-dotnet@v1
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
         with:
           # Semantic version range syntax or exact version of a dotnet version
-          dotnet-version: '7.0.x'
-          include-prerelease: true
+          dotnet-version: '9.0.x'
 
       - name: Install dependencies
         run: dotnet restore
