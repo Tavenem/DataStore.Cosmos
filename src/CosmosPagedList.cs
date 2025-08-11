@@ -7,32 +7,23 @@ namespace Tavenem.DataStorage.Cosmos;
 /// continuation token.
 /// </summary>
 /// <typeparam name="T">The type of items in the list.</typeparam>
-public class CosmosPagedList<T> : PagedList<T>
+/// <param name="collection">The collection whose elements are copied to the new
+/// list.</param>
+/// <param name="pageNumber">The current page number. The first page is 1.</param>
+/// <param name="pageSize">The page size.</param>
+/// <param name="continuationToken">
+/// A continuation token which can be used to resume iteration on the underlying collection.
+/// </param>
+public class CosmosPagedList<T>(
+    IEnumerable<T>? collection,
+    long pageNumber,
+    long pageSize,
+    string? continuationToken = null) : PagedList<T>(collection, pageNumber, pageSize, null)
 {
     /// <summary>
     /// A continuation token which can be used to resume iteration on the underlying collection.
     /// </summary>
-    public string? ContinuationToken { get; }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CosmosPagedList{T}"/> class that contains
-    /// elements copied from the specified collection and has sufficient capacity to accommodate
-    /// the number of elements copied.
-    /// </summary>
-    /// <param name="collection">The collection whose elements are copied to the new
-    /// list.</param>
-    /// <param name="pageNumber">The current page number. The first page is 1.</param>
-    /// <param name="pageSize">The page size.</param>
-    /// <param name="continuationToken">
-    /// A continuation token which can be used to resume iteration on the underlying collection.
-    /// </param>
-    public CosmosPagedList(
-        IEnumerable<T>? collection,
-        long pageNumber,
-        long pageSize,
-        string? continuationToken = null)
-        : base(collection, pageNumber, pageSize, null)
-        => ContinuationToken = continuationToken;
+    public string? ContinuationToken { get; } = continuationToken;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CosmosPagedList{T}"/> class that contains

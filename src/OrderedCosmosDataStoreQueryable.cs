@@ -1,32 +1,24 @@
 ﻿using Microsoft.Azure.Cosmos;
 using System.Linq.Expressions;
+using Tavenem.DataStorage.Interfaces;
 
 namespace Tavenem.DataStorage.Cosmos;
 
 /// <summary>
 /// Provides LINQ operations on a <see cref="CosmosDataStore"/>, after an ordering operation.
 /// </summary>
-public class OrderedCosmosDataStoreQueryable<T> : CosmosDataStoreQueryable<T>, IOrderedDataStoreQueryable<T>
+/// <typeparam name="TSource">
+/// The type of the elements of the source.
+/// </typeparam>
+public class OrderedCosmosDataStoreQueryable<TSource>(IDataStore provider, Container container, IOrderedQueryable<TSource> source)
+    : CosmosDataStoreQueryable<TSource>(provider, container, source), IOrderedDataStoreQueryable<TSource>
+    where TSource : notnull
 {
-    /// <summary>
-    /// Initializes a new instance of <see cref="OrderedCosmosDataStoreQueryable{T}"/>.
-    /// </summary>
-    public OrderedCosmosDataStoreQueryable(Container container, IOrderedQueryable<T> source) : base(container, source) { }
+    /// <inheritdoc />
+    public IOrderedDataStoreQueryable<TSource> ThenBy<TKey>(Expression<Func<TSource, TKey>> keySelector, IComparer<TKey>? comparer = null)
+        => new OrderedCosmosDataStoreQueryable<TSource>(Provider, container, source.ThenBy(keySelector, comparer));
 
-    /// <summary>
-    /// Performs a subsequent ordering of the elements in this <see
-    /// cref="IOrderedDataStoreQueryable{T}"/> in the given order.
-    /// </summary>
-    /// <typeparam name="TKey">The type of the key returned by the function represented by
-    /// <paramref name="keySelector"/>.</typeparam>
-    /// <param name="keySelector">A function to extract a key from each element.</param>
-    /// <param name="descending">Whether results will be ordered in descending order.</param>
-    /// <returns>
-    /// An <see cref="IOrderedDataStoreQueryable{T}"/> whose elements are sorted according to a
-    /// key.
-    /// </returns>
-    public IOrderedDataStoreQueryable<T> ThenBy<TKey>(Expression<Func<T, TKey>> keySelector, bool descending = false)
-        => descending
-            ? new OrderedCosmosDataStoreQueryable<T>(_container, ((IOrderedQueryable<T>)_source).ThenByDescending(keySelector))
-            : new OrderedCosmosDataStoreQueryable<T>(_container, ((IOrderedQueryable<T>)_source).ThenBy(keySelector));
+    /// <inheritdoc />
+    public IOrderedDataStoreQueryable<TSource> ThenByDescending<TKey>(Expression<Func<TSource, TKey>> keySelector, IComparer<TKey>? comparer = null)
+        => new OrderedCosmosDataStoreQueryable<TSource>(Provider, container, source.ThenByDescending(keySelector, comparer));
 }

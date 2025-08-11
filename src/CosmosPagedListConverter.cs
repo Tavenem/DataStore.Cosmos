@@ -35,7 +35,7 @@ public class CosmosPagedListConverter : JsonConverterFactory
         var valueType = typeToConvert.GetGenericArguments()[0];
 
         return (JsonConverter)Activator.CreateInstance(
-            typeof(CosmosPagedListConverterInner<>).MakeGenericType(new Type[] { valueType }),
+            typeof(CosmosPagedListConverterInner<>).MakeGenericType([valueType]),
             BindingFlags.Instance | BindingFlags.Public,
             binder: null,
             args: null,

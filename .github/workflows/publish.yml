@@ -10,13 +10,13 @@ jobs:
     name: build, pack, publish, and release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
       
-      - name: Setup .NET 9
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
           # Semantic version range syntax or exact version of a dotnet version
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Install dependencies
         run: dotnet restore
