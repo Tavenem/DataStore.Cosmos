@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.34.0-preview
+## 0.34.0-0.34.1-preview
 ### Changed
 - Update to .NET 10
 - The original `CosmosDataStore` has been divided into three separate implementations:
